@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="app">
+        <div v-if="hasBook">
+            <table>
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>书籍名称</td>
+                        <td>出版日期</td>
+                        <td>价格</td>
+                        <td>购买数量</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(book, index) in books" :key="index">
+                        <td>{{index + 1}}</td>
+                        <td>{{book.name}}</td>
+                        <td>{{book.date}}</td>
+                        <td>{{book.price | moneyFilter}}</td>
+                        <td>
+                            <button @click="add(index)">+</button>
+                            {{book.num}}
+                            <button @click="sub(index)">-</button>
+                        </td>
+                        <td>
+                            <button @click="delBook(index)">移除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <span>总价：{{totalMoney | moneyFilter}}</span>
+        </div>
+        <div v-else>
+            购物车为空
+        </div>
+
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                books: [
+                    {name: '《算法1》', date: '2006-01', price: 85, num: 1},
+                    {name: '《算法2》', date: '2008-01', price: 76, num: 1},
+                    {name: '《算法3》', date: '2003-01', price: 65, num: 1},
+                    {name: '《算法4》', date: '2009-01', price: 45, num: 1},
+                    {name: '《算法5》', date: '2011-01', price: 34, num: 1},
+                ],
+                hasBook: true
+            },
+            filters: {
+                moneyFilter(money){
+                    return "￥" + money.toFixed(2)
+                }
+            },
+            computed: {
+                totalMoney(){
+                    // let totalMoney = 0;
+                    // for(let book of this.books){
+                    //     totalMoney += Number.parseFloat(book.price) * book.num
+                    // }
+
+                    // reduce用法
+                    let totalMoney = this.books.reduce((preV, book) => {
+                        return preV + book.price * book.num
+                    }, 0)
+                    return totalMoney
+                }
+            },
+            methods: {
+                delBook(index){
+                    this.books.splice(index, 1)
+                    if(this.books.length == 0) this.hasBook = false
+                },
+                add(index){
+                    this.books[index].num++
+                },
+                sub(index){
+                    this.books[index].num--
+                    if(this.books[index].num == 0){
+                        this.books.splice(index, 1)
+                        if(this.books.length == 0) this.hasBook = false
+                    }
+                },
+            }
+        })
+
+
+        // var nums = [10,20,30,444,666,777,40]
+        // var total = 0;
+        // var newNums = nums.filter((num) => num < 100).map((n) => n * 2).reduce((preValue, n) => {
+        //     return preValue + n;
+        // }, 0)
+        // console.log(newNums)
+         
+    </script>
+</body>
+</html>

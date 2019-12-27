@@ -1,0 +1,223 @@
+安装vue脚手架3的版本
+npm install -g @vue/cli
+ 
+3版本的脚手架可以下载2版本的模板，但是直接用3版本的脚手架执行2版本的模板是不可以的，下载2版本的命令为:
+npm install -g @vue/cli-init            下载之后，就可以即使用3版本创建项目，也可以使用2版本创建项目
+
+vue --version   查看版本
+
+vue create 项目名               版本3的创建项目
+vue init webpack 项目名         脚手架2创建项目
+
+脚手架2 
+vue init webpack hello-world    脚手架2创建项目
+
+// 构建项目 两种方式
+Runtime + compiler
+Runtime-only：
+    .vue文件的template是由谁处理的？
+    是由vue-template-compiler处理
+    render函数
+    render: function(createElement){
+        // 1 createElement('标签', {标签属性}, ['内容']), 用标签替换<div id="app"></div>
+        return createElement('h2', {class: 'box'}, ['hello World'])
+
+        // 2 createElement('标签', {标签属性}, ['内容']), 用标签替换<div id="app"></div>
+        return createElement('h2', 
+            {class: 'box'}, 
+            ['hello World', createElement('button', ['按钮'])])
+
+        // 3 传入组件用法
+        // createElement(组件), 用标签替换<div id="app"></div>
+        return createElement(cpn)
+    }
+
+Runtime-only 优点: 
+1 性能更高(解释)
+    区别在于main.js:
+    compiler使用组件，需要先导入，注册，使用(template-->ast-->render-->virtual DOM-->UI)
+    only 导入，函数使用(render-->virtual DOM-->UI)
+2 代码量更少
+    因为不需要代码处理template与ast部分的代码
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+webpack 
+建立一个build文件夹，
+base.comfig.js      保存的是公共的webpack配置
+dev.config.js       保存的是开发环境的配置
+prod.config.js      保存的是生产环境的配置
+通过webpackMerge 将公共配置与需要的配置连接起来
+webpackMerge(baseConfig, {...})
+
+在package.json中
+通过不同的命令执行不同的配置
+例如：
+"build": "webpack --config ./build/prod.config.js",
+"dev": "webpack-dev-server --open --config ./build/dev.config.js"
+
+--open              指的是启动服务后自动打开浏览器
+--config ./...      指的是执行哪个配置的命令
+
+
+
+
+
+
+
+
+
+
+1 组件化开发
+1.1 父子组件的访问
+    children/refs
+    parent/root
+1.2 插槽
+    基本使用
+    具名插槽
+    编译的作用域
+    作用域插槽
+
+2 模块化开发
+2.1 为什么使用模块化开发
+    简单写js代码带来的问题
+    闭包引起代码不可复用
+    自己实现了简单的模块化
+    AMD/CMD/CommonJS
+2.2 ES6中模块化的使用
+    export
+    import
+
+3 webpack
+3.1 什么是webpack
+    webpack和gulp的对比
+    webpack依赖环境
+    安装webpack
+3.2 webpack起步
+    webpack命令
+    webpack配置: 
+        webpack.comfig.js/package.json(scripts)
+3.3 webpack的loader
+    css-loader/style-loader
+    less-loader/less
+    url-loader/file-loader
+    babel-loader
+3.4 webpack中配置Vue
+    vue-loader
+3.5 webpack的plugin
+3.6 搭建本地的服务器
+    webpack-dev-server
+3.7 配置文件的分离
+
+4 Vue Cli 
+4.1 什么是cli
+    脚手架是什么东西
+    CLI依赖webpack,node,npm
+    安装CLI3--> 拉取CLI2模块
+4.2 CLI2生产的目录解构的解析
+
+
+
+
+
+
+
+
+
+1 Vue Cli
+
+    删除cli3保存的用户配置：C:\Users\jxd\.vuerc
+
+    任意终端输入：
+    vue ui  打开图形操作界面
+
+    箭头函数
+    箭头函数中的this引用的是最近作用域中的this
+    箭头函数是如何查找呢？
+    向外层作用域中，一层层查找this,直到有this的定义
+
+    1.1 Runtime-compiler 和 Runtime-only 的区别
+    1.2 Vue Cli3
+
+2 Vue Router
+
+    打包后disk/static/js/有三类文件，
+        app.xxxxx.js        当前应用开发的所有js代码
+        manifest.x.js       为了打包代码做底层支撑
+        vendor.xx.js        vendor：供应商，提供商，第三方(vue, vue-router, axios, bs)等所有的代码
+
+    路由懒加载: 用到时再加载
+        写法:
+        const Home = () => import('../components/Home.vue')
+    路由的嵌套
+        1 创建子组件
+        2 配置映射关系
+        3 在组件内部使用router-view
+    路由的传递参数
+        1 普通方式()
+            params      例子： User
+        2 query模式(对象)
+
+    url组成 :   协议://主机:端口/路径?查询
+                scheme://host:port/path?query
+    $route 和 $router 的区别
+        $route      永远指向活跃的router
+        $router     是Vue封装的
+    导航守卫
+        作用: 监听从哪个页面跳到哪个页面，中间可以操作
+        前置钩子与后置钩子称为全局守卫
+        路由独享守卫: beforeEnter等
+        组件内守卫
+    keep-alive
+        属性: 
+            1 include
+            2 exclude(排除)
+
+
+    2.1 什么是前端路由
+    2.2 路由的基本配置
+    2.3 细节处理
+    2.4 动态路由
+    2.5 路由参数的传递
+    2.6 路由嵌套
+    2.7 导航守卫
+    2.8 keep-alive
+    2.9 TabBar的封装
+
+3 Vuex
+
+    Vuex 之前先看Promise
+        什么情况下使用Promise
+            一般情况下是有异步操作时，使用Promise对这个异步操作进行封装
+
+            new -> 构造函数(1. 保存了一些状态信息， 2. 执行传入的函数)
+            在执行传入的函数时，会传入两个参数， resolve, reject 本身又是函数
+            
+            new Promise()
+    
+    Vuex
+        核心概念
+            State
+                存放状态相关信息
+                State单一状态树
+            Getters
+                类似计算属性
+            Mutation
+                Vuex 的 store 状态的更新唯一方式： 提交Mutation
+                不能进行异步操作，如果必须使用，则用Action替代
+            Action
+            Modele
+
+4 网络请求封装(axios)

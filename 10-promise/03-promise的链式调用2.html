@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+   <script>
+       
+        // 网络请求： aaa -> 自己处理
+        // 处理： aaa111 -> 自己处理
+        // 处理： aaa111222 -> 自己处理
+
+        // new Promise(res => {
+          
+        //     setTimeout(() => {
+        //         res('aaa')
+        //     }, 1000)
+        // })
+        // .then(data => {
+        //     // 自己处理的10行代码
+
+        //     console.log(data + '得到的结果')
+
+        //     // 对结果进行第一次处理
+        //     return new Promise(res => {
+        //         res(data + '111')
+        //     })
+        // })
+        // .then(data => {
+        //     // 自己处理的10行代码
+        //     console.log(data + '第一次结果')
+
+        //     // 对结果进行第二次处理
+        //     return new Promise(res => {
+        //         res(data + '222')
+        //     })
+        // })
+        // .then(data => {
+        //     // 自己处理的10行代码
+
+        //     console.log(data + '第二次结果')
+
+
+        // })
+
+        
+        // // 简化1 
+        // new Promise(resolve => {
+          
+        //     setTimeout(() => {
+        //         resolve('aaa')
+        //     }, 1000)
+        // })
+        // .then(data => {
+        //     // 自己处理的10行代码
+
+        //     console.log(data + '得到的结果')
+
+        //     // 对结果进行第一次处理
+        //     return Promise.resolve(data + '111')
+        // })
+        // .then(data => {
+        //     // 自己处理的10行代码
+        //     console.log(data + '第一次结果')
+
+        //     // 对结果进行第二次处理
+        //     return Promise.resolve(data + '222')
+        //     return Promise.reject('err')  // 直接进catch
+        //     或者通过throw进入catch
+        //     throw 'err message'
+        // })
+        // .then(data => {
+        //     // 自己处理的10行代码
+
+        //     console.log(data + '第二次结果')
+
+
+        // })
+        // .catch(err => {
+
+        // })
+
+        // 简化2 省略Promise
+        new Promise(resolve => {
+          
+          setTimeout(() => {
+              resolve('aaa')
+          }, 1000)
+      })
+      .then(data => {
+          // 自己处理的10行代码
+          console.log(data + '得到的结果')
+          // 对结果进行第一次处理
+          return data + '111'
+      })
+      .then(data => {
+          // 自己处理的10行代码
+          console.log(data + '第一次结果')
+          // 对结果进行第二次处理
+          return data + '222'
+      })
+      .then(data => {
+          // 自己处理的10行代码
+          console.log(data + '第二次结果')
+
+
+      })
+
+
+    </script>
+</body>
+</html>
